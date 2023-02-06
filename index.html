@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script type="module" src="/src/main.ts"></script>
+
+    <title>Todo</title>
+  </head>
+  <body>
+    <section class="todo-container">
+      <div class="title">TypeScript Todo List</div>
+      <section class="todo-control">
+        <div class="total">총 <span id="todo-count">0</span>개</div>
+        <div class="control">
+          <button class="btn all active">전체 보기</button>
+          <button class="btn complete">완료된 것만 보기</button>
+          <button class="btn not-complete">해야할 일 보기</button>
+        </div>
+      </section>
+
+      <section class="todo-list">
+        <input
+          type="text"
+          id="todo-input"
+          placeholder="할 일을 추가해주세요."
+        />
+        <div class="todo-items"></div>
+      </section>
+    </section>
+  </body>
+</html>

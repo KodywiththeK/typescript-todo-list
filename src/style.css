@@ -1,0 +1,118 @@
+html,
+body {
+  height: 100%;
+  min-height: 100%;
+  cursor: default;
+  margin: 0;
+  padding: 0;
+  background-color: #f7f8ff;
+  display: flex;
+  justify-content: center;
+}
+
+* {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  box-sizing: border-box;
+  font-weight: 200;
+}
+
+button {
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 10px;
+  border: 0.5px solid rgb(207, 207, 207);
+  background: white;
+}
+
+button:hover {
+  background: #e0eaff;
+}
+
+button:active {
+  background: #ccdcff;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 14px 18px;
+  border-bottom: 1px solid #e7e7e7;
+  font-size: 16px;
+  position: sticky;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+
+.todo-container {
+  margin-top: 100px;
+  width: 480px;
+}
+
+.todo-container .title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.todo-container .todo-control {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.todo-container .todo-control .control {
+  text-align: center;
+}
+
+.todo-list {
+  height: calc(100% - 200px);
+  margin-top: 15px;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 0 10px 2px rgb(233, 233, 233);
+  background: white;
+  overflow: auto;
+  scrollbar-width: none;
+  position: relative;
+}
+
+
+.todo-list::-webkit-scrollbar {
+  display: none;
+}
+
+.todo-list .todo-items .item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+  border-bottom: 1px solid #e7e7e7;
+}
+
+.todo-list .todo-items .item .item__div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.todo-list .todo-items .item .item__div * {
+  margin-right: 10px;
+}
+
+.todo-list .todo-items .item .item__div .content {
+  width: 100%;
+}
+
+.todo-list .todo-items .item .item__div .content.checked {
+  text-decoration: line-through;
+  text-decoration-color: rgb(0, 38, 255);
+}
+
+button.active {
+  border: 0.5px solid rgb(0, 38, 255);
+}
