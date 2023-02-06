@@ -67,16 +67,14 @@ class TodoApp {
     this.render(this.todoList)
   }
 
-  updateTodo(event: KeyboardEventInit) {
-    const target = <HTMLInputElement>(event as KeyboardEvent).target
+  updateTodo(event: MouseEventInit) {
+    const target = <HTMLInputElement>(event as MouseEvent).target
     const item = target.parentNode
-    if(event.key === 'Enter') {
-      this.todoList.map((todo) => {
-        if(todo.id === Number((item as HTMLDivElement).id)) {
-          todo.content = target.innerText
-        }
-      })
-    } else return
+    this.todoList.map((todo) => {
+      if(todo.id === Number((item as HTMLDivElement).id)) {
+        todo.content = target.innerText
+      }
+    })
     this.render(this.todoList)
   }
 
@@ -118,7 +116,7 @@ class TodoApp {
     
     buttonEl?.addEventListener('click', () => this.removeTodo(event as MouseEvent))
     inputEl?.addEventListener('click', () => this.updateCheckbox(event as MouseEvent))
-    contentEl?.addEventListener('keydown', () => this.updateTodo(event as MouseEvent))
+    contentEl?.addEventListener('blur', () => this.updateTodo(event as MouseEvent))
     
     return containerEl;
   }
