@@ -40,42 +40,37 @@ class TodoApp {
       return;
     }
     this.todoList.push({
-      id: this.todoList.length + 1,
+      id: this.todoList.length,
       content: target.value,
       isDone: false,
     });
     target.value = '';
-    this.render(this.todoList);
+    this.render();
   }
 
-  removeTodo(event:MouseEventInit) {
-    const target = <HTMLButtonElement>(event as MouseEvent).target
-    const item = target.parentNode
-    console.log((item as HTMLDivElement).id)
-    this.todoList = this.todoList.filter((todo) => todo.id !== Number((item as HTMLDivElement).id))
-    this.render(this.todoList)
+  removeTodo(selectedId: Todo['id']) {
+    this.todoList = this.todoList.filter((todo) => todo.id !== selectedId)
+    this.todoList.map((item, index) => item.id = index)
+    this.render()
   }
 
-  updateCheckbox(event: MouseEventInit) {
-    const target = <HTMLInputElement>(event as MouseEvent).target
-    const item = target.parentNode
+  updateCheckbox(selectedId: Todo['id']) {
     this.todoList.map((todo) => {
-      if(todo.id === Number((item as HTMLDivElement).id)) {
+      if(todo.id === selectedId) {
         todo.isDone = !todo.isDone
       }
     })
-    this.render(this.todoList)
+    this.render()
   }
 
-  updateTodo(event: MouseEventInit) {
+  updateTodo(event: MouseEventInit, selectedId: Todo['id']) {
     const target = <HTMLInputElement>(event as MouseEvent).target
-    const item = target.parentNode
     this.todoList.map((todo) => {
-      if(todo.id === Number((item as HTMLDivElement).id)) {
+      if(todo.id === selectedId) {
         todo.content = target.innerText
       }
     })
-    this.render(this.todoList)
+    this.render()
   }
 
   filterTodo(event: MouseEventInit) {
@@ -85,24 +80,11 @@ class TodoApp {
         node.classList.remove('active')
     })
     target.classList.add('active')
-    this.render(this.todoList)
-  }
-
-
-
-  getTodoList() {
-    return this.todoList;
+    this.render()
   }
 
   generateTodoList(todo:Todo) {
     const containerEl = makeDOMwithProperties('div', {class: 'item'})
-    
-    // const todoTemplate = `
-    //   <div id='${todo.id}' class="item__div">
-    //     <input type='checkbox' ${todo.isDone && 'checked'} />
-    //     <div class = 'content ${todo.isDone && 'checked'}' contentEditable> ${todo.content} </div>
-    //     <button class = 'delete'> X </button>
-    //   </div>`;
     const divEl = makeDOMwithProperties('div', {id: `${todo.id}`, class: "item__div"})
     const inputEl = makeDOMwithProperties('input', {type: 'checkbox'})
     todo.isDone && inputEl.setAttribute('checked', '')
@@ -112,27 +94,17 @@ class TodoApp {
     buttonEl.innerText = "X"
     appendChildrenList(divEl, [inputEl, contentEl, buttonEl])
     containerEl.appendChild(divEl)
-      
     
-    buttonEl?.addEventListener('click', () => this.removeTodo(event as MouseEvent))
-    inputEl?.addEventListener('click', () => this.updateCheckbox(event as MouseEvent))
-    contentEl?.addEventListener('blur', () => this.updateTodo(event as MouseEvent))
+    buttonEl?.addEventListener('click', () => this.removeTodo(todo.id))
+    inputEl?.addEventListener('change', () => this.updateCheckbox(todo.id))
+    contentEl?.addEventListener('blur', () => this.updateTodo(event as MouseEvent, todo.id))
     
     return containerEl;
   }
 
-  render(todoList: Todo[] = []) {
-    const todoListEl = document.querySelector('.todo-items');
-    const todoCount = document.querySelector('#todo-count') as HTMLSpanElement;
+  filterStatus (todoList: Todo[]) {
     const activeTodo = document.querySelector('.active') as HTMLButtonElement;
-    // const fragment = document.createDocumentFragment();
-    // fragment.append(...todoListComponent);
-    // todoListEl?.appendChild(fragment)
-    // const todoListComponent = todoList.map((todo) => this.generateTodoList(todo))
     let todoListComponent:HTMLElement[] = []
-    if(activeTodo.className.includes('all')) {
-      todoListComponent = todoList.map((todo) => this.generateTodoList(todo)) 
-    }
     if(activeTodo.className.includes('complete')) {
       const newArr = todoList.filter((todo) => todo.isDone === true) 
       todoListComponent = newArr.map((todo) => this.generateTodoList(todo)) 
@@ -141,8 +113,17 @@ class TodoApp {
       const newArr = todoList.filter((todo) => todo.isDone === false) 
       todoListComponent = newArr.map((todo) => this.generateTodoList(todo)) 
     }
-    todoCount.innerText = String(todoList.length)
-    todoListEl?.replaceChildren(...todoListComponent)
+    if(activeTodo.className.includes('all')) {
+      todoListComponent = todoList.map((todo) => this.generateTodoList(todo)) 
+    }
+    return todoListComponent;
+  }
+
+  render() {
+    const todoListEl = document.querySelector('.todo-items');
+    const todoCount = document.querySelector('#todo-count') as HTMLSpanElement;
+    todoCount.innerText = String(this.todoList.length)
+    todoListEl?.replaceChildren(...this.filterStatus(this.todoList))
   }
 }
 const todoApp = new TodoApp();
